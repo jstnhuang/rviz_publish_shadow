@@ -214,7 +214,8 @@ protected:
   PointCloudCommon* pointcloud_common_;
 
   std::set<std::string> transport_plugin_types_;
-
+  ros::NodeHandle node_handle_;
+  ros::Publisher mld_publisher_;
 };
 
 

@@ -54,6 +54,7 @@
 #include <image_transport/subscriber_filter.h>
 
 #include <sensor_msgs/image_encodings.h>
+#include <sensor_msgs/PointCloud2.h>
 
 #include "depth_cloud_mld.h"
 
@@ -78,7 +79,8 @@ DepthCloudDisplay::DepthCloudDisplay()
   , ml_depth_data_(new MultiLayerDepth())
   , angular_thres_(0.5f)
   , trans_thres_(0.01f)
-
+  , node_handle_()
+  , mld_publisher_(node_handle_.advertise<sensor_msgs::PointCloud2>("/kinect_mld", 5))
 {
 
   // Depth map properties
@@ -481,7 +483,8 @@ void DepthCloudDisplay::processMessage(sensor_msgs::ImageConstPtr depth_msg,
     cloud_msg->header = depth_msg->header;
 
     // add point cloud message to pointcloud_common to be visualized
-    pointcloud_common_->addMessage(cloud_msg);
+    //pointcloud_common_->addMessage(cloud_msg);
+    mld_publisher_.publish(*cloud_msg);
   }
   catch (MultiLayerDepthException& e)
   {
